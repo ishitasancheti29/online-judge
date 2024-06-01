@@ -5,34 +5,29 @@ const app = express();
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const authRoute = require("./Routes/AuthRoute");
+const problemsRoute = require("./Routes/ProblemsRoute");
 const { MONGO_URL, PORT } = process.env;
 
 mongoose
-  .connect(MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB is  connected successfully"))
+  .connect(MONGO_URL)
+  .then(() => console.log("MongoDB is connected successfully"))
   .catch((err) => console.error(err));
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
 
 app.use(
   cors({
-    origin: ["http://localhost:5000"],
+    origin: ["http://localhost:3000"], // Adjust to match your frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
-app.use(cookieParser());
 
+app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.use("/", authRoute);
+app.use("/", problemsRoute);
 
-
-//b22ee093
-//cB4Q0QUKTvpoondp
-//mongodb+srv://b22ee093:@cluster0.msksjfx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});

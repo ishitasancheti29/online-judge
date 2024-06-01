@@ -14,12 +14,13 @@ const Home = () => {
         navigate("/login");
       }
       const { data } = await axios.post(
-        "http://localhost:4000",
+        "http://localhost:5000",
         {},
         { withCredentials: true }
       );
       const { status, user } = data;
       setUsername(user);
+      console.log(user);
       return status
         ? toast(`Hello ${user}`, {
             position: "top-right",
